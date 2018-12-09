@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <title>レストラン検索</title>
+</head>
+
+<body>
+    <h1>レストラン検索</h1>
+    <button id="btn">表示</button>
+    <div id="echo"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1Xd3oiuXW_0dQxAi46m1GBzqnDnw8Xvo"></script>
+
+    <script>
+
+        $(window).on('load', function () {
+            $('#btn').on('click', function () {
+                console.log("pushed");
+                initMap();
+            });
+
+
+            function initMap() {
+                // Geolocation APIに対応している
+                if (navigator.geolocation) {
+                    // 現在地を取得
+                    navigator.geolocation.getCurrentPosition(
+                        // 取得成功した場合
+                        function (position) {
+                            // 緯度・経度を変数に格納
+                            const lat = position.coords.latitude;
+                            const lon = position.coords.longitude;
+                            getJson(lat, lon);
+                        },
+                        // 取得失敗した場合
+                        function (error) {
+                            // エラーメッセージを表示
+                            switch (error.code) {
+                                case 1: // PERMISSION_DENIED
+                                    alert("位置情報の利用が許可されていません");
+                                    break;
+                                case 2: // POSITION_UNAVAILABLE
+                                    alert("現在位置が取得できませんでした");
+                                    break;
+                                case 3: // TIMEOUT
+                                    alert("タイムアウトになりました");
+                                    break;
+                                default:
+                                    alert("その他のエラー(エラーコード:" + error.code + ")");
+                                    break;
+                            }
+                        }
+                    );
+                    // Geolocation APIに対応していない
+                } else {
+                    alert("この端末では位置情報が取得できません");
+                }
+            }
+
+
+            // jsonファイルから読み込んでランダムで配列に格納
+            function getJson(lat, lon) {
+                // ぐるなびapi
+                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=7664879666388f58f32e6ee7033d2965&e_money=1&latitude=" + lat + "&longitude=" + lon + "&card=1&no_smoking=1";
+
+                $.getJSON(url)
+                    .done(function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        let arr = [];
+                        for (i = 0; i < data.rest.length; i++) {
+                            // console.log(data.rest[i].name);
+                            // console.log(data.rest[i].opentime);
+                            // console.log(data.rest[i].address);
+                            arr.push('<h2>' + data.rest[i].name + '</h2>');
+                            arr.push('<p>' + data.rest[i].opentime + '</p>');
+                            arr.push('<p>' + data.rest[i].holiday + '</p>');
+                            // arr.push('<a href="https://maps.google.co.jp/maps?q=' + data.rest[i].name + '" target="_blank"><p>map</p></a>');
+                            arr.push('<a href="' + data.rest[i].url + '" target="_blank"><p>url</p></a>');
+                            arr.push('<p>' + data.rest[i].tel + '</p>');
+                            arr.push('<p>' + data.rest[i].address + '</p>');
+                            arr.push('<iframe src="https://www.google.co.jp/maps?output=embed&q=' + data.rest[i].name + '" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>');
+                            arr.push('<img src="' + data.rest[i].image_url.shop_image1 + '">');
+                            // arr.push('<img src="' + data.rest[i].image_url.qrcode + '">');
+                        }
+                        $('#echo').html(arr);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR.status + textStatus + errorThrown);
+                    })
+                    .always(function () {
+                        console.log("complete");
+                    });
+            }
+
+        });
+    </script>
+</body>
+
+</html>
