@@ -73,7 +73,7 @@
             // jsonファイルから読み込んでランダムで配列に格納
             const getJson = (latlng) => {
                 // ぐるなびapi
-                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=318487261660f09a6cc0b43d5874e0f1&latitude=" + latlng.lat + "&longitude=" + latlng.lng + "&range=3&card=1&no_smoking=1";
+                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=31ab95e06252c519d9f792665958e730&latitude=" + latlng.lat + "&longitude=" + latlng.lng + "&range=3&card=1&no_smoking=1";
 
                 $.getJSON(url)
                     .done((data, textStatus, jqXHR) => {
