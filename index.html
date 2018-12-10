@@ -37,9 +37,12 @@
                         // 取得成功した場合
                         function (position) {
                             // 緯度・経度を変数に格納
-                            const lat = position.coords.latitude;
-                            const lon = position.coords.longitude;
-                            getJson(lat, lon);
+                            const latlng = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            }
+                            console.log(latlng);
+                            getJson(latlng);
                         },
                         // 取得失敗した場合
                         function (error) {
@@ -68,12 +71,12 @@
 
 
             // jsonファイルから読み込んでランダムで配列に格納
-            function getJson(lat, lon) {
+            const getJson = (latlng) => {
                 // ぐるなびapi
-                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=7664879666388f58f32e6ee7033d2965&e_money=1&latitude=" + lat + "&longitude=" + lon + "&card=1&no_smoking=1";
+                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=318487261660f09a6cc0b43d5874e0f1&latitude=" + latlng.lat + "&longitude=" + latlng.lng + "&range=3&card=1&no_smoking=1";
 
                 $.getJSON(url)
-                    .done(function (data, textStatus, jqXHR) {
+                    .done((data, textStatus, jqXHR) => {
                         console.log(data);
                         let arr = [];
                         for (i = 0; i < data.rest.length; i++) {
@@ -81,22 +84,25 @@
                             // console.log(data.rest[i].opentime);
                             // console.log(data.rest[i].address);
                             arr.push('<h2>' + data.rest[i].name + '</h2>');
+                            arr.push('<p>' + data.rest[i].code.category_name_s + '</p>');
+                            arr.push('<p>' + data.rest[i].budget + '</p>');
                             arr.push('<p>' + data.rest[i].opentime + '</p>');
                             arr.push('<p>' + data.rest[i].holiday + '</p>');
-                            // arr.push('<a href="https://maps.google.co.jp/maps?q=' + data.rest[i].name + '" target="_blank"><p>map</p></a>');
                             arr.push('<a href="' + data.rest[i].url + '" target="_blank"><p>url</p></a>');
                             arr.push('<p>' + data.rest[i].tel + '</p>');
                             arr.push('<p>' + data.rest[i].address + '</p>');
-                            arr.push('<iframe src="https://www.google.co.jp/maps?output=embed&q=' + data.rest[i].name + '" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>');
+                            // arr.push('<iframe src="https://www.google.co.jp/maps?output=embed&q=loc:' + data.rest[i].latitude + ',' + data.rest[i].longitude + '" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>');
+                            arr.push('<iframe src="https://www.google.co.jp/maps/embed/v1/place?key=AIzaSyDPdgC7OwDM0Gjz05-A8QsH5RrWNe-UU4g&q=' + data.rest[i].latitude + ',' + data.rest[i].longitude + '" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>');
                             arr.push('<img src="' + data.rest[i].image_url.shop_image1 + '">');
                             // arr.push('<img src="' + data.rest[i].image_url.qrcode + '">');
                         }
+                        // return arr;
                         $('#echo').html(arr);
                     })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
+                    .fail((jqXHR, textStatus, errorThrown) => {
                         console.log(jqXHR.status + textStatus + errorThrown);
                     })
-                    .always(function () {
+                    .always(() => {
                         console.log("complete");
                     });
             }
