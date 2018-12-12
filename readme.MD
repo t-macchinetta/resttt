@@ -1,6 +1,16 @@
 # auto_beaujolais
 
-## <a href="https://t-macchinetta.github.io/resthere/" target="_blank">Demo</a>
+## <a href="https://t-macchinetta.github.io/resttt/" target="_blank">Demo</a>
+
+
+##2018/12/12進捗
+###動作
+- ほぼ完成
+
+###デザイン
+- ヘッダーとフッターは完成
+- コンテンツはこれから
+
 
 ## 2018/12/09進捗
 ### 動作
