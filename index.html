@@ -16,7 +16,7 @@
     <h1>RESTTT</h1>
     <button id="btn">表示</button>
     <div id="echo"></div>
-
+    <p>Supported by <a href="https://api.gnavi.co.jp/api/scope/">ぐるなびWebService</a></p>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1Xd3oiuXW_0dQxAi46m1GBzqnDnw8Xvo"></script>
 
@@ -24,7 +24,6 @@
 
         $(window).on('load', function () {
             $('#btn').on('click', function () {
-                console.log("pushed");
                 initMap();
             });
 
@@ -73,7 +72,8 @@
             // jsonファイルから読み込んでランダムで配列に格納
             const getJson = (latlng) => {
                 // ぐるなびapi
-                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=31ab95e06252c519d9f792665958e730&latitude=" + latlng.lat + "&longitude=" + latlng.lng + "&range=3&card=1&no_smoking=1";
+                const key_id = "ae3926b340b9bf3348db1c984e34f06f";
+                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=" + key_id + "&latitude=" + latlng.lat + "&longitude=" + latlng.lng + "&range=3&card=1&no_smoking=1";
 
                 $.getJSON(url)
                     .done((data, textStatus, jqXHR) => {
@@ -89,7 +89,7 @@
                             arr.push('<p>' + data.rest[i].budget + '</p>');
                             arr.push('<p>' + data.rest[i].opentime + '</p>');
                             arr.push('<p>' + data.rest[i].holiday + '</p>');
-                            arr.push('<a href="' + data.rest[i].url + '" target="_blank"><p>webSite</p></a>');
+                            arr.push('<a href="' + data.rest[i].url + '" target="_blank"><p>webSite(ぐるなび店舗ページへ)</p></a>');
                             arr.push('<a href="tel:' + data.rest[i].tel.split("-").join("") + '"><p>' + data.rest[i].tel + '</p></a>');
                             arr.push('<p>' + data.rest[i].address + '</p>');
                             // arr.push('<iframe src="https://www.google.co.jp/maps?output=embed&q=loc:' + data.rest[i].latitude + ',' + data.rest[i].longitude + '" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>');
