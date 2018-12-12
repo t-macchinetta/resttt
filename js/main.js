@@ -15,7 +15,9 @@ $(window).on('load', function () {
                         lng: position.coords.longitude
                     }
                     console.log(latlng);
+                    // return latlng;
                     getJson(latlng);
+                    return true;
                 },
                 // 取得失敗した場合
                 function (error) {
@@ -67,14 +69,17 @@ $(window).on('load', function () {
                     arr.push('<iframe src="https://www.google.co.jp/maps/embed/v1/place?key=AIzaSyDPdgC7OwDM0Gjz05-A8QsH5RrWNe-UU4g&q=' + data.rest[i].latitude + ',' + data.rest[i].longitude + '" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>');
                     // arr.push('<img src="' + data.rest[i].image_url.qrcode + '">');
                 }
-                // return arr;
                 $('#echo').html(arr);
+                setTimeout(() => {
+                    $('#modal').addClass('hidden');
+                }, 1000);
             })
             .fail((jqXHR, textStatus, errorThrown) => {
                 console.log(jqXHR.status + textStatus + errorThrown);
             })
             .always(() => {
                 console.log("complete");
+                return true;
             });
     }
     // ----------!関数定義----------
@@ -82,7 +87,21 @@ $(window).on('load', function () {
 
     // ----------実行----------
     $('#btn').on('click', function () {
-        initMap();
+        // $('#search_section').hide();
+        // $('#modal').removeClass('hidden');
+        // initMap();
+        const milliseconds = 500;
+        const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+        Promise.resolve()
+            .then(() => wait(milliseconds))
+            .then(() => $('#search_section').hide())
+            .then(() => wait(0))
+            .then(() => $('#modal').removeClass('hidden'))
+            .then(() => wait(milliseconds))
+            .then(() => initMap());
+        // .then(() => wait(milliseconds))
+        // .then(() => $('#modal').addClass('hidden'));
+
     });
 
     // ----------!実行----------
