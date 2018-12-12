@@ -9,106 +9,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/main.css">
     <title>RESTTT</title>
 </head>
 
 <body>
-    <h1>RESTTT</h1>
-    <button id="btn">表示</button>
-    <div id="echo"></div>
-    <p>Supported by <a href="https://api.gnavi.co.jp/api/scope/">ぐるなびWebService</a></p>
+    <header id="title" class="sticky-top">
+        <nav class="navbar navbar-dark bg-dark">
+            <a id="title" class="navbar-brand" href="#" onclick="window.location.reload();">RESTTT</a>
+        </nav>
+    </header>
+    <!-- <section id="search_section" class="main">
+        <button type="button" id="btn" class="btn btn-primary btn-lg btn-block badge-pill">Search</button>
+    </section> -->
+
+    <!-- <button id="btn">表示</button> -->
+    <section id="echo"></section>
+    <!-- <div id="echo"></div> -->
+    <footer id="footer" class="fixed-bottom">
+        <nav class="navbar navbar-dark bg-dark">
+            <button id="btn" class="btn btn-primary my-2 my-sm-0" type="submit">
+                <i class="material-icons">
+                    local_dining
+                </i>
+            </button>
+            <!-- <a id="title" class="navbar-brand" href="#" onclick="window.location.reload();">RESTTT</a> -->
+            <p>Supported by <a href="https://api.gnavi.co.jp/api/scope/">ぐるなびWebService</a></p>
+        </nav>
+    </footer>
+
+    <section id="modal" class="hidden"></section>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1Xd3oiuXW_0dQxAi46m1GBzqnDnw8Xvo"></script>
+    <script src="js/main.js"></script>
 
-    <script>
-
-        $(window).on('load', function () {
-            $('#btn').on('click', function () {
-                initMap();
-            });
-
-
-            function initMap() {
-                // Geolocation APIに対応している
-                if (navigator.geolocation) {
-                    // 現在地を取得
-                    navigator.geolocation.getCurrentPosition(
-                        // 取得成功した場合
-                        function (position) {
-                            // 緯度・経度を変数に格納
-                            const latlng = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude
-                            }
-                            console.log(latlng);
-                            getJson(latlng);
-                        },
-                        // 取得失敗した場合
-                        function (error) {
-                            // エラーメッセージを表示
-                            switch (error.code) {
-                                case 1: // PERMISSION_DENIED
-                                    alert("位置情報の利用が許可されていません");
-                                    break;
-                                case 2: // POSITION_UNAVAILABLE
-                                    alert("現在位置が取得できませんでした");
-                                    break;
-                                case 3: // TIMEOUT
-                                    alert("タイムアウトになりました");
-                                    break;
-                                default:
-                                    alert("その他のエラー(エラーコード:" + error.code + ")");
-                                    break;
-                            }
-                        }
-                    );
-                    // Geolocation APIに対応していない
-                } else {
-                    alert("この端末では位置情報が取得できません");
-                }
-            }
-
-
-            // jsonファイルから読み込んでランダムで配列に格納
-            const getJson = (latlng) => {
-                // ぐるなびapi
-                const key_id = "ae3926b340b9bf3348db1c984e34f06f";
-                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=" + key_id + "&latitude=" + latlng.lat + "&longitude=" + latlng.lng + "&range=3&card=1&no_smoking=1";
-
-                $.getJSON(url)
-                    .done((data, textStatus, jqXHR) => {
-                        // console.log(data);
-                        let arr = [];
-                        for (i = 0; i < data.rest.length; i++) {
-                            // console.log(data.rest[i].name);
-                            // console.log(data.rest[i].opentime);
-                            // console.log(data.rest[i].address);
-                            arr.push('<h2>' + data.rest[i].name + '</h2>');
-                            arr.push('<p>' + data.rest[i].code.category_name_s + '</p>');
-                            arr.push('<img src="' + data.rest[i].image_url.shop_image1 + '">');
-                            arr.push('<p>' + data.rest[i].budget + '</p>');
-                            arr.push('<p>' + data.rest[i].opentime + '</p>');
-                            arr.push('<p>' + data.rest[i].holiday + '</p>');
-                            arr.push('<a href="' + data.rest[i].url + '" target="_blank"><p>webSite(ぐるなび店舗ページへ)</p></a>');
-                            arr.push('<a href="tel:' + data.rest[i].tel.split("-").join("") + '"><p>' + data.rest[i].tel + '</p></a>');
-                            arr.push('<p>' + data.rest[i].address + '</p>');
-                            // arr.push('<iframe src="https://www.google.co.jp/maps?output=embed&q=loc:' + data.rest[i].latitude + ',' + data.rest[i].longitude + '" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>');
-                            arr.push('<iframe src="https://www.google.co.jp/maps/embed/v1/place?key=AIzaSyDPdgC7OwDM0Gjz05-A8QsH5RrWNe-UU4g&q=' + data.rest[i].latitude + ',' + data.rest[i].longitude + '" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>');
-                            // arr.push('<img src="' + data.rest[i].image_url.qrcode + '">');
-                        }
-                        // return arr;
-                        $('#echo').html(arr);
-                    })
-                    .fail((jqXHR, textStatus, errorThrown) => {
-                        console.log(jqXHR.status + textStatus + errorThrown);
-                    })
-                    .always(() => {
-                        console.log("complete");
-                    });
-            }
-
-        });
-    </script>
 </body>
 
 </html>
