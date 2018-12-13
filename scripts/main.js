@@ -1,5 +1,39 @@
 $(window).on('load', function () {
 
+    'use strict';
+    var isLocalhost = Boolean(window.location.hostname === 'localhost' ||
+        window.location.hostname === '[::1]' ||
+        window.location.hostname.match(
+            /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+        )
+    );
+
+    if ('serviceWorker' in navigator &&
+        (window.location.protocol === 'https:' || isLocalhost)) {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(function (registration) {
+                registration.onupdatefound = function () {
+                    if (navigator.serviceWorker.controller) {
+                        var installingWorker = registration.installing;
+                        installingWorker.onstatechange = function () {
+                            switch (installingWorker.state) {
+                                case 'installed':
+                                    break;
+                                case 'redundant':
+                                    throw new Error('The installing ' +
+                                        'service worker became redundant.');
+                                default:
+                            }
+                        };
+                    }
+                };
+            }).catch(function (e) {
+                console.error('Error during service worker registration:', e);
+            });
+    }
+
+    // Your custom JavaScript goes here
+
     // ----------関数の定義----------
     // map表示関数
     const initMap = () => {
@@ -55,7 +89,7 @@ $(window).on('load', function () {
             .done((data, textStatus, jqXHR) => {
                 // console.log(data);
                 let arr = [];
-                for (i = 0; i < data.rest.length; i++) {
+                for (let i = 0; i < data.rest.length; i++) {
                     arr.push('<h2>' + data.rest[i].name + '</h2>');
                     arr.push('<p>' + data.rest[i].code.category_name_s + '</p>');
                     arr.push('<img src="' + data.rest[i].image_url.shop_image1 + '">');
