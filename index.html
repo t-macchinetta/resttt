@@ -32,8 +32,8 @@
 </head>
 
 <body>
-    <div id="app">
-        <header id="title" class="sticky-top" v-cloak>
+    <div id="app" v-cloak>
+        <header id="title" class="sticky-top">
             <nav class="navbar navbar-dark bg-dark">
                 <a id="title_link" class="navbar-brand" href="#" onclick="window.location.reload();">{{title}}</a>
             </nav>
@@ -46,7 +46,7 @@
             </i>
         </section>
 
-        <section id="echo" v-cloak>
+        <section id="echo">
             <div>
                 <div v-for="rest in rests">
                     <h2>{{ rest.name }}</h2>
