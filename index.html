@@ -47,8 +47,8 @@
         </section>
 
         <section id="echo">
-            <div>
-                <div v-for="rest in rests">
+            <div class="list-group list-group-flush">
+                <!-- <li v-for="rest in rests" class="list-group-item">
                     <h2>{{ rest.name }}</h2>
                     <p>{{ rest.code.category_name_s[0] }}, {{ rest.code.category_name_s[1] }}</p>
                     <img :src=rest.image_url.shop_image1 />
@@ -58,7 +58,25 @@
                     <p>{{ rest.tel.split("-").join("") }}</p>
                     <p>{{ rest.address }}</p>
                     <iframe :src="`https://www.google.co.jp/maps/embed/v1/place?key=AIzaSyDPdgC7OwDM0Gjz05-A8QsH5RrWNe-UU4g&q=${rest.latitude},${rest.longitude}`" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
-                </div>
+                </li> -->
+                <a v-for="rest in rests" href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h3 class="mb-1">{{ rest.name }}</h3>
+                        <!-- <small class="text-muted">￥{{ rest.budget }}</small> -->
+                    </div>
+                    <img :src=rest.image_url.shop_image1 class="img-thumbnail" />
+                    <h5 class="mb-1 text-uppercase">budget</h5>
+                    <p class="mb-1">￥{{ rest.budget }}</p>
+                    <h5 class="mb-1 text-uppercase">opentime</h5>
+                    <p class="mb-1">{{ rest.opentime }}</p>
+                    <h5 class="mb-1 text-uppercase">holiday</h5>
+                    <p class="mb-1">{{ rest.holiday}}</p>
+                    <h5 class="mb-1 text-uppercase">tel</h5>
+                    <p class="mb-1">{{ rest.tel.split("-").join("")}}</p>
+                    <iframe :src="`https://www.google.co.jp/maps/embed/v1/place?key=AIzaSyDPdgC7OwDM0Gjz05-A8QsH5RrWNe-UU4g&q=${rest.latitude},${rest.longitude}`" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    <small class="text-muted">{{ rest.address }}</small>
+                </a>
+
             </div>
         </section>
 
