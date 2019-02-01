@@ -63,7 +63,9 @@
                     <h5 class="mb-1 text-uppercase">tel</h5>
                     <p class="mb-1">{{ rest.tel.split("-").join("")}}</p>
                     <!-- <iframe :src="`https://www.google.co.jp/maps/embed/v1/place?key=AIzaSyDPdgC7OwDM0Gjz05-A8QsH5RrWNe-UU4g&q=${rest.latitude},${rest.longitude}`" width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe> -->
-                    <small class="text-muted">{{ rest.address }}</small>
+                    <a :href="`https://maps.google.com/maps?q=${rest.latitude},${rest.longitude}`">
+                        <small class="text-muted">{{ rest.address }}</small>
+                    </a>
                 </div>
             </div>
         </section>
