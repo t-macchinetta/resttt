@@ -83,7 +83,7 @@ const app = new Vue({
             }).then((result) => {
                 const latlng = result;
                 const key_id = 'ae3926b340b9bf3348db1c984e34f06f';
-                const url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/?&range=3&card=1&no_smoking=1&hit_per_page=100&keyid=' + key_id + '&latitude=' + latlng.lat + '&longitude=' + latlng.lng;
+                const url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/?&range=2&card=1&no_smoking=1&hit_per_page=100&keyid=' + key_id + '&latitude=' + latlng.lat + '&longitude=' + latlng.lng;
                 axios.get(url)
                     .then((res) => {
                         app.rests = res.data.rest;
