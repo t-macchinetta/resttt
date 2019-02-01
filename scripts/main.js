@@ -86,6 +86,7 @@ const app = new Vue({
                 const url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/?&range=2&card=1&no_smoking=1&hit_per_page=100&keyid=' + key_id + '&latitude=' + latlng.lat + '&longitude=' + latlng.lng;
                 axios.get(url)
                     .then((res) => {
+                        console.log(res.data.rest);
                         app.rests = res.data.rest;
                         app.modal_show = false;
                     })
