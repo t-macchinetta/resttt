@@ -37,9 +37,9 @@ if ('serviceWorker' in navigator &&
 const app = new Vue({
     el: '#app',
     data: {
-        title: "resttt",
-        credit: "ぐるなびWebService",
-        credit_url: "https://api.gnavi.co.jp/api/scope/",
+        title: 'resttt',
+        credit: 'ぐるなびWebService',
+        credit_url: 'https://api.gnavi.co.jp/api/scope/',
         loading_comment: 'now loading...',
         rests: [],
         info_show: true,
@@ -63,27 +63,27 @@ const app = new Vue({
                         function (error) {
                             switch (error.code) {
                                 case 1: // PERMISSION_DENIED
-                                    alert("位置情報の利用が許可されていません");
+                                    alert('位置情報の利用が許可されていません');
                                     break;
                                 case 2: // POSITION_UNAVAILABLE
-                                    alert("現在位置が取得できませんでした");
+                                    alert('現在位置が取得できませんでした');
                                     break;
                                 case 3: // TIMEOUT
-                                    alert("タイムアウトになりました");
+                                    alert('タイムアウトになりました');
                                     break;
                                 default:
-                                    alert("その他のエラー(エラーコード:" + error.code + ")");
+                                    alert('その他のエラー(エラーコード:" + error.code + ")');
                                     break;
                             }
                         }
                 } else {
-                    alert("この端末では位置情報が取得できません");
+                    alert('この端末では位置情報が取得できません');
                 }
 
             }).then((result) => {
                 const latlng = result;
-                const key_id = "ae3926b340b9bf3348db1c984e34f06f";
-                const url = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=" + key_id + "&latitude=" + latlng.lat + "&longitude=" + latlng.lng + "&range=3&card=1&no_smoking=1";
+                const key_id = 'ae3926b340b9bf3348db1c984e34f06f';
+                const url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/?&range=3&card=1&no_smoking=1&hit_per_page=100&keyid=' + key_id + '&latitude=' + latlng.lat + '&longitude=' + latlng.lng;
                 axios.get(url)
                     .then((res) => {
                         app.rests = res.data.rest;
